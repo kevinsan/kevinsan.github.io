@@ -16,7 +16,7 @@
 title: 奎章的博客
 email: kuizhang110@foxmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  写点东西.
+  NULL.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: 扛沙包
