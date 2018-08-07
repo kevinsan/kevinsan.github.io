@@ -1,14 +1,42 @@
 ---
 layout: post
-title:  "测试"
+title:  "管理器模式"
 date:   2018-08-07 17:17:28 +0800
 categories: jekyll update
 ---
-滴滴滴
-{% highlight c %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
+# 概述
+> ####管理器模式
+> Managers提供一个统一的接口，用于管理和访问一组相关对象的实例化和访问，使得管理职责的变化独立于某个具体类。是管理其他实例类的 管理者，某些场景也可以充当MVC中的C的角色。（其实是单利模式的扩展，就是自己mange自己，并且确保被管理者是唯一的）在Cocoa 或者Cocoa Touch中包括NSFileManager、NSInputManager、NSLayoutManager等类。
+
+####结构
+![](http://upload-images.jianshu.io/upload_images/1517257-51774d07ee87ca75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+#####参与者
+##### Subject（也可以理解成单一功能的manger）
+- 领域对象。
+- 提供 Client 需要的领域服务。
+#####Manager（当管理多个manger时候，这个最外层manger一般要求唯一的单例）
+- Manager 类是唯一负责创建和销毁 Subject 对象的类。它负责跟踪和管理 Subject 对象。
+- 典型的管理职责包括根据指定的 Key 搜索 Subject 对象。
+- 因为 Subject 对 Manager 无引用，所以 Manager 可根据需要修改或子类化。
+#####Client
+- 从 Manager 对象获取 Subject 对象。
+- 使用 Subject 的领域服务。
+
+![](http://upload-images.jianshu.io/upload_images/1517257-beabeb5570625591.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+####适用性
+>我们来讨论一下使用场景。有一组对象需要是唯一的，但同时不是单例对象的情况，这是很常见的。比如字体(比如方正雅黑之类的)。系统需要使用不同的字体，所以封装的字体对象可能会多次实例化，因此不能用单例。但同时，我们又不希望同一个字体同时出现多个实例。
+这样我们就希望，请求特定的字体类型返回特定的实例，同时也希望添加了字体系统可以了解到(CTFontManagerRegisterGraphicsFont)。
+
+ ######当以下情况成立时可以使用 Manager 模式：
+- 当需要对同一个类的所有的对象进行操作时。
+- 当需要按需的创建和销毁对象时。
+- 当需要控制对象的生命周期时。
+
+####效果
+- 可以对全部对象进行统计。
+- 管理职责可以无依赖的变化。
+- 可以按需替换管理职责。
+- 管理职责可以得到重用
+####讨论
+管理者模式是其他一些模式（如单例、外观和控制器）的融合与一般化。许多管理者在应用程序内执行类似于控制器的功能。 在Cocoa中遇到以“Manager”结尾的类名时，就暗示了它的一个或多个角色。在自定义的代码中，当需要用于管理其他类的多个实例的类时，要想解耦推荐使用管理者，尤其是在需要确保唯一性时。例如某个控制器里会各种类似功能的实体，那么就可以抽象出一个manger来管理这些实体（Subject），manger开放client提供Register UnRegister接口。
